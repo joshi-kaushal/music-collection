@@ -4,8 +4,8 @@ const Album = require('../models/album')
 const async = require('async')
 const validator = require('express-validator');
 
-const { body,validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
+const { body,validationResult } = require('express-validator');
+const { sanitizeBody } = require('express-validator');
 
 exports.index = function(req, res) {
 	async.parallel({
@@ -72,7 +72,7 @@ exports.song_create_post = [
 		if(!errors.isEmpty()) {
 			// This means, there are errors. Render form again with sanitized values/error messages.
 
-			res.render('song_form', {title: 'Add new Song', data: 'arey kuch nahi samja'})
+			res.render('song_form', {title: 'Add new Song', data: 'THERE IS SOMETHING WRONG'})
 			return
 		}
 		else {
