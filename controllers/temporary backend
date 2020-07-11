@@ -1,0 +1,17 @@
+catlog/
+
+catlog/<objects>
+
+catlog/<objects>/<id>
+
+catlog/<objects>/create
+
+catlog/<objects>/<id>/update
+
+catlog/<objects>/<id>/delete
+
+
+// HANDLE SONG CREATE FROM POST
+exports.song_create_post = function(req, res) {
+	//res.send('NOT IMPLEMENTED YET: SONG CREATE POST')
+}

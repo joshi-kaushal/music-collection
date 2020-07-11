@@ -1,0 +1,161 @@
+[1mdiff --git a/app.js b/app.js[m
+[1mindex 8bdcf43..6aaa07b 100644[m
+[1m--- a/app.js[m
+[1m+++ b/app.js[m
+[36m@@ -6,13 +6,14 @@[m [mvar logger = require('morgan');[m
+ [m
+ var indexRouter = require('./routes/index');[m
+ var usersRouter = require('./routes/users');[m
+[31m-[m
+[32m+[m[32mvar catalogRouter = require('./routes/catalog');[m
+[32m+[m[41m [m
+ var app = express();[m
+ [m
+ // Setting up MongoDB Connection[m
+ const mongoose = require('mongoose')[m
+ const MongoDB = 'mongodb+srv://joshikaushal:quHAYe2Z9RD2Vckj@cluster0.orex9.mongodb.net/music-collection?retryWrites=true&w=majority' [m
+[31m-mongoose.connect(MongoDB, { useNewUrlParser: true })[m
+[32m+[m[32mmongoose.connect(MongoDB, { useNewUrlParser: true, useUnifiedTopology: true  })[m
+ const db = mongoose.connection[m
+ db.on('error', console.error.bind(console, 'MongoDB connection error: '))[m
+ [m
+[36m@@ -29,6 +30,7 @@[m [mapp.use(express.static(path.join(__dirname, 'public')));[m
+ [m
+ app.use('/', indexRouter);[m
+ app.use('/users', usersRouter);[m
+[32m+[m[32mapp.use('/catalog', catalogRouter);[m
+ [m
+ // catch 404 and forward to error handler[m
+ app.use(function(req, res, next) {[m
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex d663732..c6996cc 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -642,6 +642,15 @@[m
+         }[m
+       }[m
+     },[m
+[32m+[m[32m    "express-validator": {[m
+[32m+[m[32m      "version": "6.6.0",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/express-validator/-/express-validator-6.6.0.tgz",[m
+[32m+[m[32m      "integrity": "sha512-xcephfzFbUssJph/nOSKIdx+I+8GRz5by/8rOIKL6gJikKKKJjnwYH5TG1nIDB6kEalUtZMbOFuSNOp/HHY84Q==",[m
+[32m+[m[32m      "requires": {[m
+[32m+[m[32m        "lodash": "^4.17.15",[m
+[32m+[m[32m        "validator": "^13.1.1"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+     "fill-range": {[m
+       "version": "7.0.1",[m
+       "resolved": "https://registry.npmjs.org/fill-range/-/fill-range-7.0.1.tgz",[m
+[36m@@ -1871,6 +1880,11 @@[m
+       "resolved": "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz",[m
+       "integrity": "sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM="[m
+     },[m
+[32m+[m[32m    "validator": {[m
+[32m+[m[32m      "version": "13.1.1",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/validator/-/validator-13.1.1.tgz",[m
+[32m+[m[32m      "integrity": "sha512-8GfPiwzzRoWTg7OV1zva1KvrSemuMkv07MA9TTl91hfhe+wKrsrgVN4H2QSFd/U/FhiU3iWPYVgvbsOGwhyFWw=="[m
+[32m+[m[32m    },[m
+     "vary": {[m
+       "version": "1.1.2",[m
+       "resolved": "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz",[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex 05e9bf6..a509867 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -13,6 +13,7 @@[m
+     "cookie-parser": "~1.4.4",[m
+     "debug": "~2.6.9",[m
+     "express": "~4.16.1",[m
+[32m+[m[32m    "express-validator": "^6.6.0",[m
+     "http-errors": "~1.6.3",[m
+     "mongoose": "^5.9.22",[m
+     "morgan": "~1.9.1",[m
+[1mdiff --git a/public/stylesheets/style.css b/public/stylesheets/style.css[m
+[1mindex 9453385..59397ea 100644[m
+[1m--- a/public/stylesheets/style.css[m
+[1m+++ b/public/stylesheets/style.css[m
+[36m@@ -6,3 +6,9 @@[m [mbody {[m
+ a {[m
+   color: #00B7FF;[m
+ }[m
+[32m+[m
+[32m+[m[32m.sidebar-nav {[m
+[32m+[m	[32mmargin-top: 20px;[m
+[32m+[m	[32mpadding: 0;[m
+[32m+[m	[32mlist-style: none;[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/routes/index.js b/routes/index.js[m
+[1mindex ecca96a..f94d6d5 100644[m
+[1m--- a/routes/index.js[m
+[1m+++ b/routes/index.js[m
+[36m@@ -2,8 +2,13 @@[m [mvar express = require('express');[m
+ var router = express.Router();[m
+ [m
+ /* GET home page. */[m
+[31m-router.get('/', function(req, res, next) {[m
+[31m-  res.render('index', { title: 'Express' });[m
+[32m+[m[32m// router.get('/', function(req, res, next) {[m
+[32m+[m[32m//   res.render('index', { title: 'Express' });[m
+[32m+[m[32m// });[m
+[32m+[m
+[32m+[m
+[32m+[m[32mrouter.get('/', function(req, res) {[m
+[32m+[m[32m  res.redirect('/catalog');[m
+ });[m
+ [m
+ module.exports = router;[m
+[1mdiff --git a/views/index.pug b/views/index.pug[m
+[1mindex 3d63b9a..a1aacf8 100644[m
+[1m--- a/views/index.pug[m
+[1m+++ b/views/index.pug[m
+[36m@@ -2,4 +2,13 @@[m [mextends layout[m
+ [m
+ block content[m
+   h1= title[m
+[31m-  p Welcome to #{title}[m
+[32m+[m[32m  p Welcome to #[em title][m
+[32m+[m
+[32m+[m[32m  if error[m
+[32m+[m[32m    p Error getting dynamic content :([m
+[32m+[m[32m    p= error[m
+[32m+[m[32m  else[m
+[32m+[m[32m    p Current Stuff[m
+[32m+[m[32m    ul[m
+[32m+[m[32m      li #[strong Songs: ] !{data.song_count}[m
+[32m+[m[32m      li #[strong Albums: ] !{data.album_count}[m
+[1mdiff --git a/views/layout.pug b/views/layout.pug[m
+[1mindex 15af079..2225917 100644[m
+[1m--- a/views/layout.pug[m
+[1m+++ b/views/layout.pug[m
+[36m@@ -1,7 +1,26 @@[m
+ doctype html[m
+[31m-html[m
+[32m+[m[32mhtml(lang='en')[m
+   head[m
+     title= title[m
+[32m+[m[32m    meta(charset='utf-8')[m
+[32m+[m[32m    meta(name='viewport', content='width=device-width, initial-scale=1')[m
+[32m+[m[32m    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')[m
+[32m+[m[32m    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')[m
+[32m+[m[32m    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')[m
+     link(rel='stylesheet', href='/stylesheets/style.css')[m
+   body[m
+[31m-    block content[m
+[32m+[m[32m    div(class='container-fluid')[m
+[32m+[m[32m      div(class='row')[m
+[32m+[m[32m        div(class='col-sm-2')[m
+[32m+[m[32m          block sidebar[m
+[32m+[m[32m            ul(class='sidebar-nav')[m
+[32m+[m[32m              li[m
+[32m+[m[32m                a(href='/') Home[m
+[32m+[m[32m              li[m
+[32m+[m[32m                a(href='/catalog/song/create') Create a song[m
+[32m+[m[32m              li[m
+[32m+[m[32m                hr[m
+[32m+[m[32m              li[m
+[32m+[m[32m                a(href='/catalog/song/all') All Songs[m
+[32m+[m[32m        div(class='col-sm-10')[m
+[32m+[m[32m          block content[m
+\ No newline at end of file[m

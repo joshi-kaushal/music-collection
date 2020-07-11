@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='song_name') Song:
+      input#song_name.form-control(type='text' placeholder='Name of the song' name='Song' required='true' value=(undefined===song ? '' : song.name) )
+    div.form-group
+      label(for='language') Language
+      input#language.form-control(type='text' placeholder='Language' name='Language' required='true' value=(undefined===song ? '' : song.language) )
+    div.form-group
+      label(for='album_name') Album:
+      input#album_name.form-control(type='text' placeholder='Name of the Album' name='Album' required='true' value=(undefined===song ? '' : song.album) )
+    div.form-group
+      label(for='singers_name') Singers:
+      input#singers_name.form-control(type='text' placeholder='Name of the Singer' name='Singer' required='true' value=(undefined===song ? '' : song.singers) )
+    div.form-group
+      label(for='composer_name') Composer:
+      input#composer_name.form-control(type='text' placeholder='Name of the Composer' name='Composer' required='true' value=(undefined===song ? '' : song.composer) )
+    div.form-group
+      label(for='lyricist_name') Lyricist
+      input#lyricist_name.form-control(type='text' placeholder='Name of the Lyricist' name='Lyricist' required='true' value=(undefined===song ? '' : song.lyricist) )    
+    div.form-group
+      label(for='genre_name') Genre
+      input#genre_name.form-control(type='text' placeholder='Name of the Genre' name='Genre' required='true' value=(undefined===song ? '' : song.genre) )
+    div.form-group
+      button.btn.btn-primary(type='submit') Submit
+
+    if errors
+      hr
+      ul
+        for error in errors
+          li!= error.msg
+          | p=data
