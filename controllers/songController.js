@@ -60,7 +60,7 @@ exports.song_create_post = [
 
 		// Creating song object with escaped and trimemd data
 		let song = new Song ({
-			song_name: req.body.title,
+			song_name: req.body.song_name,
 			language: req.body.language,	
 			album_name: req.body.album_name,
 			singers_name: req.body.singers_name,
@@ -72,7 +72,7 @@ exports.song_create_post = [
 		if(!errors.isEmpty()) {
 			// This means, there are errors. Render form again with sanitized values/error messages.
 
-			res.render('song_form', {title: 'Add new Song', data: 'THERE IS SOMETHING WRONG'})
+			res.render('song_form', {title: 'Add new Song', song: req.body, errors: errors.array() });
 			return
 		}
 		else {
@@ -80,7 +80,7 @@ exports.song_create_post = [
 			song.save(function(err) {
 				if(err) {return next(err)}
 
-				res.redirect(song.url)
+				res.redirect(song.url);
 			})
 		}
 	} 
