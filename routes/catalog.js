@@ -149,4 +149,6 @@ router.get('/song/:id/update', song_controller.song_update_get)
 router.post('/song/:id/update', song_controller.song_update_get)
 
 
+router.get('/song/:id', song_controller.display_songs);
+
 module.exports = router

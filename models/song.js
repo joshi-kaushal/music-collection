@@ -18,7 +18,7 @@ const SongSchema = new Schema ( {
 SongSchema
 	.virtual('url')
 	.get(function() {
-		return '/songs' + this._id
+		return 'catalog/song/' + this._id
 	})
 
 
