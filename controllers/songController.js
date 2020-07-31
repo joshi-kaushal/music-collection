@@ -27,7 +27,7 @@ exports.display_songs = function(req, res) {
 		.populate('album')
 		.exec(function(err, song_list){
 			if(err) { return next(err) }
-
+				console.log(song_list)
 			res.render('song_list', { title: 'All Songs', song_list: song_list} )
 		})
 }
@@ -41,7 +41,7 @@ exports.song_create_get = function(req, res) {
 // HANDLE SONG CREATE FROM POST
 exports.song_create_post = [
 
-	//validation
+	// //validation
 	validator.body('song_name', 'Song Name required').trim().isLength({ min: 1 }),
 	validator.body('composer_name', 'Composer\'s Name required').trim().isLength({ min: 1 }),
 	validator.body('singers_name', 'Singers\' name required').trim().isLength({ min: 1 }),
@@ -57,7 +57,7 @@ exports.song_create_post = [
 
 		// Extracting validation and sanitization erros
 		const errors = validationResult(req)
-
+		console.log(errors)
 		// Creating song object with escaped and trimemd data
 		let song = new Song ({
 			song_name: req.body.song_name,

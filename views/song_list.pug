@@ -7,8 +7,8 @@ block content
     -song_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
     each song in song_list
       li
-        #{song.song_name}
-        | (#{song.composer_name})
+        #{song.song_name} this
+        | (#{song.composer_name}) that
 
     else
       li ERROR LOL

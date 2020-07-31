@@ -6,25 +6,32 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='song_name') Song:
-      input#song_name.form-control(type='text' placeholder='Name of the song' name='Song' required='true' value=(undefined===song ? '' : song.name) )
+      input.form-control(type='text' id='' placeholder='Name of the song' name='song_name' required='true' value=song_name )
+
     div.form-group
-      label(for='language') Language
-      input#language.form-control(type='text' placeholder='Language' name='Language' required='true' value=(undefined===song ? '' : song.language) )
+      label(for='language') Language :
+      input.form-control(type='text' id='language' placeholder='Language' name='language' required='true' value=language )
+    
     div.form-group
       label(for='album_name') Album:
-      input#album_name.form-control(type='text' placeholder='Name of the Album' name='Album' required='true' value=(undefined===song ? '' : song.album) )
+      input.form-control(type='text' id='album_name' placeholder='Name of the Album' name='album_name' required='true' value=album )
+    
     div.form-group
       label(for='singers_name') Singers:
-      input#singers_name.form-control(type='text' placeholder='Name of the Singer' name='Singer' required='true' value=(undefined===song ? '' : song.singers) )
+      input.form-control(type='text' id='singers_name' placeholder='Name of the Singer' name='singers_name' required='true' value=singers_name )
+    
     div.form-group
       label(for='composer_name') Composer:
-      input#composer_name.form-control(type='text' placeholder='Name of the Composer' name='Composer' required='true' value=(undefined===song ? '' : song.composer) )
+      input.form-control(type='text' id='composer_name' placeholder='Name of the Composer' name='composer_name' required='true' value=composer_name )
+    
     div.form-group
       label(for='lyricist_name') Lyricist
-      input#lyricist_name.form-control(type='text' placeholder='Name of the Lyricist' name='Lyricist' required='true' value=(undefined===song ? '' : song.lyricist) )    
+      input.form-control(type='text' id='lyricist_name' placeholder='Name of the Lyricist' name='lyricist_name' required='true' value=lyricist_name )    
+    
     div.form-group
       label(for='genre_name') Genre
-      input#genre_name.form-control(type='text' placeholder='Name of the Genre' name='Genre' required='true' value=(undefined===song ? '' : song.genre) )
+      input.form-control(type='text' id='genre_name' placeholder='Name of the Genre' name='genre_name' required='true' value=genre_name )
+    
     div.form-group
       button.btn.btn-primary(type='submit') Submit
 
